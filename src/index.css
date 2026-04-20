@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@theme {
+  --color-codeup-blue: #0b2239;
+  --color-codeup-blue-nav: #0b2239e6;
+  --color-codeup-green: #4bf48f;
+}
+
+* {
+    font-family: "Montserrat", sans-serif;
+    scroll-behavior: smooth;
+}
+
+.container {
+    @apply mx-auto;
+}
+
+.container-white {
+    @apply max-w-7xl mx-auto px-6 bg-white rounded-3xl py-8;
+}
+
+.container-blue {
+    @apply max-w-7xl mx-auto px-6 text-white rounded-3xl py-8;
+}
