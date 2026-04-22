@@ -1,20 +1,21 @@
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useAuth } from '../../auth/useAuth';
-import axios from 'axios';
+import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../auth/useAuth";
+import axios from "axios";
+import { api } from "../../auth/apiClient";
 
 export default function Contact() {
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        message: '',
-        contact: ""
+        name: "",
+        email: "",
+        message: "",
+        contact: "",
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState('idle');
+    const [submitStatus, setSubmitStatus] = useState("idle");
 
-    const { user } = useAuth()
+    const { user } = useAuth();
 
     useEffect(() => {
         if (user) {
@@ -29,33 +30,26 @@ export default function Contact() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-        setSubmitStatus('idle');
+        setSubmitStatus("idle");
 
         const payload = {
             name: formData.name,
             email: formData.email,
-            contact: formData.contact, 
-            query: formData.message, 
+            contact: formData.contact,
+            query: formData.message,
         };
 
         try {
-            const response = await axios.post(
-                "https://codeup.in/dev/contact",
-                payload
-            );
+            const response = await api.post("/contact", payload);
 
             console.log("Success:", response.data);
 
-            setSubmitStatus('success');
-            setFormData({ message: '', contact: '' });
-
+            setSubmitStatus("success");
+            setFormData({ message: "", contact: "" });
         } catch (error) {
-            console.error(
-                "Error:",
-                error.response?.data || error.message
-            );
+            console.error("Error:", error.response?.data || error.message);
 
-            setSubmitStatus('error');
+            setSubmitStatus("error");
         } finally {
             setIsSubmitting(false);
         }
@@ -67,22 +61,17 @@ export default function Contact() {
             <div className="bg-[#0b2239] text-white py-20 px-4">
                 <div className="max-w-6xl mx-auto text-center">
                     <h1 className="text-5xl font-bold mb-6">Contact Us</h1>
-                    <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-                        Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-                    </p>
+                    <p className="text-xl text-gray-200 max-w-3xl mx-auto">Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
                 </div>
             </div>
 
             {/* Content */}
             <div className="max-w-6xl mx-auto px-4 py-20">
                 <div className="grid md:grid-cols-2 gap-12">
-
                     {/* Left */}
                     <div>
                         <h2 className="text-3xl font-bold text-[#0b2239] mb-8">Get in Touch</h2>
-                        <p className="text-gray-600 mb-8 leading-relaxed">
-                            Whether you're a student looking to join our programs, a college interested in hosting our awareness sessions, or just want to learn more about Codeup, we're here to help.
-                        </p>
+                        <p className="text-gray-600 mb-8 leading-relaxed">Whether you're a student looking to join our programs, a college interested in hosting our awareness sessions, or just want to learn more about Codeup, we're here to help.</p>
 
                         <div className="space-y-6">
                             <div className="flex items-start space-x-4">
@@ -115,14 +104,14 @@ export default function Contact() {
                     <div className="bg-white p-8 rounded-2xl shadow-lg">
                         <h2 className="text-2xl font-bold text-[#0b2239] mb-6">Send us a Message</h2>
 
-                        {submitStatus === 'success' && (
+                        {submitStatus === "success" && (
                             <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
                                 <p className="text-green-800 font-semibold">Message sent successfully!</p>
                                 <p className="text-green-700 text-sm">We'll get back to you soon.</p>
                             </div>
                         )}
 
-                        {submitStatus === 'error' && (
+                        {submitStatus === "error" && (
                             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
                                 <p className="text-red-800 font-semibold">Something went wrong.</p>
                                 <p className="text-red-700 text-sm">Please try again later.</p>
@@ -130,7 +119,6 @@ export default function Contact() {
                         )}
 
                         <form onSubmit={handleSubmit} className="space-y-6">
-
                             <input
                                 type="text"
                                 required
@@ -183,10 +171,8 @@ export default function Contact() {
                                     </>
                                 )}
                             </button>
-
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>

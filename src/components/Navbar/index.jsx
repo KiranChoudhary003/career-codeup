@@ -288,6 +288,7 @@ import { useAuth } from "../../auth/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../auth/AuthProvider";
+import { api } from "../../auth/apiClient";
 
 const NAVBAR_OFFSET = 56;
 
@@ -304,14 +305,7 @@ const Navbar = ({ data }) => {
     // ✅ Fetch Points
     const fetchPoints = async () => {
         try {
-            const res = await axios.get(
-                "https://codeup.in/dev/v2/codeup-points",
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                }
-            );
+            const res = await api.get("/v2/codeup-points");
             const userPoints = res.data.points?.[0]?.points;
             setPoints(userPoints);
         } catch (error) {
@@ -345,10 +339,7 @@ const Navbar = ({ data }) => {
             const el = document.getElementById(id);
             if (!el) return;
 
-            const y =
-                el.getBoundingClientRect().top +
-                window.pageYOffset -
-                NAVBAR_OFFSET;
+            const y = el.getBoundingClientRect().top + window.pageYOffset - NAVBAR_OFFSET;
 
             window.scrollTo({ top: y, behavior: "smooth" });
         });
@@ -387,7 +378,6 @@ const Navbar = ({ data }) => {
     return (
         <Wrapper className="bg-[#081a2c] text-white px-4 sticky top-0 z-50 backdrop-blur-xs">
             <div className="container py-2 flex justify-between items-center gap-3">
-
                 {/* Logo */}
                 <a href="https://codeup.in">
                     <img src={data?.logo} className="w-[100px]" alt="Codeup" />
@@ -396,7 +386,6 @@ const Navbar = ({ data }) => {
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex gap-6">
                     {navLinks.map(({ title, href }, index) => {
-
                         const handleClick = (e) => {
                             // 🌐 External
                             if (title === "Academy") {
@@ -426,15 +415,7 @@ const Navbar = ({ data }) => {
                         };
 
                         return (
-                            <span
-                                key={index}
-                                onClick={handleClick}
-                                className={`cursor-pointer transition ${
-                                    isActive(title, href)
-                                        ? "text-teal-300"
-                                        : "hover:text-teal-200"
-                                }`}
-                            >
+                            <span key={index} onClick={handleClick} className={`cursor-pointer transition ${isActive(title, href) ? "text-teal-300" : "hover:text-teal-200"}`}>
                                 {title}
                             </span>
                         );
@@ -445,12 +426,7 @@ const Navbar = ({ data }) => {
                 <div className="flex gap-3 h-10">
                     {user ? (
                         <div ref={dropdownRef} className="relative">
-                            <img
-                                src={user.picture}
-                                alt="Profile"
-                                className="w-10 h-10 rounded-full cursor-pointer"
-                                onClick={() => setShowDropdown((prev) => !prev)}
-                            />
+                            <img src={user.picture} alt="Profile" className="w-10 h-10 rounded-full cursor-pointer" onClick={() => setShowDropdown((prev) => !prev)} />
 
                             {showDropdown && (
                                 <div className="absolute right-0 mt-2 w-40 bg-[#0b2239e6] border border-gray-800 rounded-md shadow-lg z-50 overflow-hidden">
@@ -467,10 +443,7 @@ const Navbar = ({ data }) => {
                             )}
                         </div>
                     ) : (
-                        <button
-                            onClick={login}
-                            className="text-white hover:text-black hover:bg-gray-200 border border-white transition px-4 py-2 rounded-full duration-300"
-                        >
+                        <button onClick={login} className="text-white hover:text-black hover:bg-gray-200 border border-white transition px-4 py-2 rounded-full duration-300">
                             Sign in
                         </button>
                     )}
